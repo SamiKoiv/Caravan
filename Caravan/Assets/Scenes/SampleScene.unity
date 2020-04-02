@@ -373,6 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartInventory: 100
+  _inventory: 0
   DisplayedStored: {fileID: 484310677}
 --- !u!58 &64090984
 CircleCollider2D:
@@ -1151,12 +1152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9b5c404bb2414f8f542a6971c32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   locatedIn: {fileID: 1799602717}
+  _state: 0
   waypoints:
   - {fileID: 64090983}
   - {fileID: 2124670190}
-  reverseDirection: 0
-  destination: 0
   moveSpeed: 1
   collectionSpeed: 3
   load: 0
@@ -1165,6 +1166,7 @@ MonoBehaviour:
   loadToA_Max: 0
   loadToB_Min: 15
   loadToB_Max: 50
+  destination: 0
 --- !u!4 &494233474
 Transform:
   m_ObjectHideFlags: 0
@@ -1246,7 +1248,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.23056345, g: 0.3018868, b: 0.20647918, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1324,6 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartInventory: 100
+  _inventory: 0
   DisplayedStored: {fileID: 1887330253}
 --- !u!4 &608335815
 Transform:
@@ -1834,12 +1837,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9b5c404bb2414f8f542a6971c32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   locatedIn: {fileID: 1799602717}
+  _state: 0
   waypoints:
   - {fileID: 64090983}
   - {fileID: 608335814}
-  reverseDirection: 0
-  destination: 0
   moveSpeed: 1
   collectionSpeed: 3
   load: 0
@@ -1848,6 +1851,7 @@ MonoBehaviour:
   loadToA_Max: 15
   loadToB_Min: 15
   loadToB_Max: 25
+  destination: 0
 --- !u!4 &962041027
 Transform:
   m_ObjectHideFlags: 0
@@ -2162,12 +2166,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9b5c404bb2414f8f542a6971c32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   locatedIn: {fileID: 1799602717}
+  _state: 0
   waypoints:
   - {fileID: 1721520575}
   - {fileID: 64090983}
-  reverseDirection: 0
-  destination: 0
   moveSpeed: 2
   collectionSpeed: 5
   load: 0
@@ -2176,6 +2180,7 @@ MonoBehaviour:
   loadToA_Max: 5
   loadToB_Min: 8
   loadToB_Max: 15
+  destination: 0
 --- !u!4 &1294223098
 Transform:
   m_ObjectHideFlags: 0
@@ -2673,12 +2678,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9b5c404bb2414f8f542a6971c32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   locatedIn: {fileID: 1799602717}
+  _state: 0
   waypoints:
   - {fileID: 1799602717}
   - {fileID: 64090983}
-  reverseDirection: 0
-  destination: 0
   moveSpeed: 2
   collectionSpeed: 5
   load: 0
@@ -2687,6 +2692,7 @@ MonoBehaviour:
   loadToA_Max: 5
   loadToB_Min: 5
   loadToB_Max: 10
+  destination: 0
 --- !u!1 &1721520574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,6 +2724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartInventory: 5
+  _inventory: 0
   DisplayedStored: {fileID: 1358375987}
 --- !u!58 &1721520576
 CircleCollider2D:
@@ -2864,6 +2871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartInventory: 5
+  _inventory: 0
   DisplayedStored: {fileID: 1126366656}
 --- !u!58 &1799602718
 CircleCollider2D:
@@ -3212,12 +3220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d9b5c404bb2414f8f542a6971c32f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugMode: 0
   locatedIn: {fileID: 1799602717}
+  _state: 0
   waypoints:
   - {fileID: 1721520575}
   - {fileID: 1799602717}
-  reverseDirection: 0
-  destination: 0
   moveSpeed: 2
   collectionSpeed: 5
   load: 0
@@ -3226,6 +3234,7 @@ MonoBehaviour:
   loadToA_Max: 5
   loadToB_Min: 3
   loadToB_Max: 7
+  destination: 0
 --- !u!4 &1911266663
 Transform:
   m_ObjectHideFlags: 0
@@ -3805,6 +3814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartInventory: 0
+  _inventory: 0
   DisplayedStored: {fileID: 40566500}
 --- !u!4 &2124670191
 Transform:

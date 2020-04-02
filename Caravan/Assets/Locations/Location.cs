@@ -6,6 +6,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider2D))]
 public abstract class Location : MonoBehaviour
 {
+    public string Name => gameObject.name;
+
     private Location selectingLocation;
     private List<Location> ConnectedWith = new List<Location>();
 

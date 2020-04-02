@@ -4,14 +4,51 @@ using UnityEngine;
 
 public class Caravan : MonoBehaviour
 {
+    #region Debugging
+    public bool DebugMode;
+
+    private void DebugLog(string msg)
+    {
+        if (DebugMode)
+            Debug.Log($"{nameof(Caravan)}: {msg}");
+    }
+
+    #endregion
+
+    #region Static
+
     static float arrivalTreshold = 0.2f;
+
+    #endregion
+
+    #region Properties
 
     public Location locatedIn;
 
-    public ActionState state;
+    public ActionState _state;
+    public ActionState State
+    {
+        get => _state;
+        set
+        {
+            _state = value;
+            DebugLog($"State changed to {value.ToString()}");
+        }
+    }
+
     public Location[] waypoints;
-    private int waypointIterator;
-    public Location NextWaypoint => waypoints[waypointIterator];
+
+    private int _waypointIterator;
+    public int WaypointIterator
+    {
+        get => _waypointIterator;
+        set
+        {
+            _waypointIterator = value;
+            DebugLog($"Caravan heads to {CurrentWaypoint.Name}");
+        }
+    }
+    public Location CurrentWaypoint => waypoints[WaypointIterator];
 
     public float moveSpeed = 1;
     public float collectionSpeed = 1;
@@ -25,7 +62,7 @@ public class Caravan : MonoBehaviour
     public int loadToB_Min;
     public int loadToB_Max;
 
-    public TravelingTo destination;
+    public int destination;
 
     public enum ActionState
     {
@@ -34,12 +71,6 @@ public class Caravan : MonoBehaviour
         Loading,
         Unloading,
         Resting
-    }
-
-    public enum TravelingTo
-    {
-        A,
-        B
     }
 
     private int NextLoad_Min
@@ -64,15 +95,19 @@ public class Caravan : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Monobehaviour
+
     private void Start()
     {
         transform.position = waypoints[0].Position;
-        state = ActionState.Loading;
+        State = ActionState.Loading;
     }
 
     void Update()
     {
-        switch (state)
+        switch (State)
         {
             case ActionState.Traveling:
                 Travel();
@@ -92,65 +127,34 @@ public class Caravan : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Functionality
+
     void Travel()
     {
-        transform.LookAt(NextWaypoint.Position, -Vector3.forward);
+        transform.LookAt(CurrentWaypoint.Position, -Vector3.forward);
         transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
 
-        if (Vector2.Distance(transform.position, NextWaypoint.Position) < arrivalTreshold)
+        if (Vector2.Distance(transform.position, CurrentWaypoint.Position) < arrivalTreshold)
             Arrive();
     }
 
     void Arrive()
     {
-        state = ActionState.Unloading;
-
-        if (!reverseDirection && destination == waypoints.Length - 1)
-        {
-            Unload();
-            ChangeDirection();
-        }
-
-        if (reverseDirection && destination == 0)
-        {
-            Unload();
-            ChangeDirection();
-        }
+        State = ActionState.Unloading;
     }
 
     void Unload()
     {
-
-        NextWaypoint.Inventory += load;
+        CurrentWaypoint.Inventory += load;
         load = 0;
+        State = ActionState.Resting;
     }
 
     void Rest()
     {
-
-    }
-
-    void ChangeDirection()
-    {
-        if (destination == 0)
-        {
-            reverseDirection = false;
-        }
-        else if (destination == waypoints.Length - 1)
-        {
-            reverseDirection = true;
-        }
-    }
-
-    void TravelToNext()
-    {
-
-        if (reverseDirection)
-            destination = Mathf.Max(destination - 1, 0);
-        else
-            destination = Mathf.Min(destination + 1, waypoints.Length - 1);
-
-        traveling = true;
+        State = ActionState.Loading;
     }
 
     void Load()
@@ -163,7 +167,10 @@ public class Caravan : MonoBehaviour
                 load += 1;
             }
             else if (load > NextLoad_Min)
-                TravelToNext();
+            {
+                EmbarkToNextDestination();
+                return;
+            }
 
             collectNext -= 1;
         }
@@ -172,9 +179,39 @@ public class Caravan : MonoBehaviour
         {
             load = NextLoad_Max;
             collectNext = 0;
-            TravelToNext();
+            EmbarkToNextDestination();
+            return;
         }
 
         collectNext += Time.deltaTime * collectionSpeed;
     }
+
+    void EmbarkToNextDestination()
+    {
+        if (destination == 0)
+        {
+            destination = waypoints.Length - 1;
+            WaypointIterator += 1;
+        }
+        else if (destination == waypoints.Length - 1)
+        {
+            destination = 0;
+            WaypointIterator -= 1;
+        }
+        else
+        {
+            if (destination > WaypointIterator)
+            {
+                WaypointIterator = Mathf.Min(WaypointIterator + 1, waypoints.Length - 1);
+            }
+            else
+            {
+                WaypointIterator = Mathf.Max(WaypointIterator - 1, 0);
+            }
+        }
+
+        State = ActionState.Traveling;
+    }
+    #endregion
+
 }
