@@ -17,13 +17,14 @@ public class Caravan : MonoBehaviour
 
     #region Static
 
+    public static List<Caravan> AllCaravans;
+
     static float arrivalTreshold = 0.2f;
 
     #endregion
 
     #region Properties
 
-    public Location locatedIn;
 
     public ActionState _state;
     public ActionState State
@@ -35,6 +36,10 @@ public class Caravan : MonoBehaviour
             DebugLog($"State changed to {value.ToString()}");
         }
     }
+
+    #region Tracking
+
+    public Vector2 Position => transform.position;
 
     public Location[] waypoints;
 
@@ -49,6 +54,8 @@ public class Caravan : MonoBehaviour
         }
     }
     public Location CurrentWaypoint => waypoints[WaypointIterator];
+
+    #endregion
 
     public float moveSpeed = 1;
     public float collectionSpeed = 1;
@@ -98,6 +105,19 @@ public class Caravan : MonoBehaviour
     #endregion
 
     #region Monobehaviour
+
+    private void OnEnable()
+    {
+        if (AllCaravans == null)
+            AllCaravans = new List<Caravan>();
+
+        AllCaravans.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        AllCaravans.Remove(this);
+    }
 
     private void Start()
     {
