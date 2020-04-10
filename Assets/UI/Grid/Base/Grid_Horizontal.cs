@@ -9,11 +9,11 @@ public class Grid_Horizontal : MonoBehaviour
     public int Rows;
     public int Columns;
 
-    [SerializeField] VerticalLayoutGroup LayoutGroup_Y;
-    [SerializeField] Transform ContentHost;
-    [SerializeField] GameObject RowPrefab;
+    [SerializeField] protected VerticalLayoutGroup LayoutGroup_Y;
+    [SerializeField] protected Transform ContentHost;
+    [SerializeField] protected GameObject RowPrefab;
 
-    private List<Row> lstRows = new List<Row>();
+    protected List<Row> lstRows = new List<Row>();
 
     private void OnValidate()
     {
@@ -21,7 +21,7 @@ public class Grid_Horizontal : MonoBehaviour
             SetupRows();
     }
 
-    private void SetupRows()
+    protected void SetupRows()
     {
         while (Rows > lstRows.Count)
         {

@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Caravan : MonoBehaviour
 {
+    public enum ActionState
+    {
+        NA,
+        Traveling,
+        Loading,
+        Unloading,
+        Resting
+    }
+
     #region Debugging
     public bool DebugMode;
 
@@ -17,34 +26,76 @@ public class Caravan : MonoBehaviour
 
     #region Static
 
-    public static List<Caravan> AllCaravans;
+    private static float arrivalTreshold = 0.2f;
 
-    static float arrivalTreshold = 0.2f;
+    #region AllCaravans
+    public static List<Caravan> _allCaravans;
+    public static List<Caravan> AllCaravans
+    {
+        get
+        {
+            if (_allCaravans == null)
+                _allCaravans = new List<Caravan>();
+
+            return _allCaravans;
+        }
+    }
+    #endregion
+
+    #region NextCaravanID
+    private static int _nextCaravanID;
+    private static int NextCaravanID
+    {
+        get
+        {
+            _nextCaravanID += 1;
+            return _nextCaravanID;
+        }
+    }
+    #endregion
 
     #endregion
 
     #region Properties
 
+    #region Public Properties
 
-    public ActionState _state;
-    public ActionState State
-    {
-        get => _state;
-        set
-        {
-            _state = value;
-            DebugLog($"State changed to {value.ToString()}");
-        }
-    }
+    #region ID
+    private int _ID;
+    public int ID => _ID;
+    #endregion
+
+    #region Destinations
+    public Location DestinationA => waypoints[0];
+    public Location DestinationB => waypoints[waypoints.Length - 1];
+    #endregion
+
+    #region ActionState
+    [SerializeField] private ActionState _state;
+    public ActionState State => _state;
+
+    #endregion
+
+
+    #region Load
+    [SerializeField] private int _currentLoad;
+    public int CurrentLoad => _currentLoad;
+    #endregion
+
+    public Vector2 Position => transform.position;
+    public Location CurrentWaypoint => waypoints[WaypointIterator];
+
+    #endregion
+
+    #region Private Properties
 
     #region Tracking
 
-    public Vector2 Position => transform.position;
 
-    public Location[] waypoints;
+    [SerializeField] Location[] waypoints;
 
     private int _waypointIterator;
-    public int WaypointIterator
+    private int WaypointIterator
     {
         get => _waypointIterator;
         set
@@ -53,32 +104,23 @@ public class Caravan : MonoBehaviour
             DebugLog($"Caravan heads to {CurrentWaypoint.Name}");
         }
     }
-    public Location CurrentWaypoint => waypoints[WaypointIterator];
 
     #endregion
 
-    public float moveSpeed = 1;
-    public float collectionSpeed = 1;
-    private float collectNext;
-    public int load;
-    public int loadMax;
+    private float DeltaTime => MasterClock.InGame.DeltaTime;
 
-    public int loadToA_Min;
-    public int loadToA_Max;
+    [SerializeField] private float moveSpeed = 1;
+    [SerializeField] private float collectionSpeed = 1;
+    [SerializeField] private float collectNext;
+    [SerializeField] int loadMax;
 
-    public int loadToB_Min;
-    public int loadToB_Max;
+    [SerializeField] int loadToA_Min;
+    [SerializeField] private int loadToA_Max;
 
-    public int destination;
+    [SerializeField] private int loadToB_Min;
+    [SerializeField] private int loadToB_Max;
 
-    public enum ActionState
-    {
-        NA,
-        Traveling,
-        Loading,
-        Unloading,
-        Resting
-    }
+    [SerializeField] private int destination;
 
     private int NextLoad_Min
     {
@@ -104,13 +146,12 @@ public class Caravan : MonoBehaviour
 
     #endregion
 
+    #endregion
+
     #region Monobehaviour
 
     private void OnEnable()
     {
-        if (AllCaravans == null)
-            AllCaravans = new List<Caravan>();
-
         AllCaravans.Add(this);
     }
 
@@ -121,8 +162,9 @@ public class Caravan : MonoBehaviour
 
     private void Start()
     {
+        _ID = NextCaravanID;
         transform.position = waypoints[0].Position;
-        State = ActionState.Loading;
+        _state = ActionState.Loading;
     }
 
     void Update()
@@ -154,7 +196,7 @@ public class Caravan : MonoBehaviour
     void Travel()
     {
         transform.LookAt(CurrentWaypoint.Position, -Vector3.forward);
-        transform.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
+        transform.Translate(Vector3.forward * DeltaTime * moveSpeed);
 
         if (Vector2.Distance(transform.position, CurrentWaypoint.Position) < arrivalTreshold)
             Arrive();
@@ -162,31 +204,40 @@ public class Caravan : MonoBehaviour
 
     void Arrive()
     {
-        State = ActionState.Unloading;
+        _state = ActionState.Unloading;
     }
 
     void Unload()
     {
-        CurrentWaypoint.Inventory += load;
-        load = 0;
-        State = ActionState.Resting;
+        CurrentWaypoint.Inventory += _currentLoad;
+        _currentLoad = 0;
+        _state = ActionState.Resting;
     }
 
     void Rest()
     {
-        State = ActionState.Loading;
+        _state = ActionState.Loading;
     }
 
     void Load()
     {
+        if (_currentLoad == NextLoad_Max)
+        {
+            collectNext = 0;
+            EmbarkToNextDestination();
+            return;
+        }
+
+        collectNext += DeltaTime * collectionSpeed;
+
         if (collectNext > 1)
         {
             if (waypoints[destination].Inventory > 0)
             {
                 waypoints[destination].Inventory -= 1;
-                load += 1;
+                _currentLoad += 1;
             }
-            else if (load > NextLoad_Min)
+            else if (_currentLoad >= NextLoad_Min)
             {
                 EmbarkToNextDestination();
                 return;
@@ -194,16 +245,6 @@ public class Caravan : MonoBehaviour
 
             collectNext -= 1;
         }
-
-        if (load >= NextLoad_Max)
-        {
-            load = NextLoad_Max;
-            collectNext = 0;
-            EmbarkToNextDestination();
-            return;
-        }
-
-        collectNext += Time.deltaTime * collectionSpeed;
     }
 
     void EmbarkToNextDestination()
@@ -230,7 +271,7 @@ public class Caravan : MonoBehaviour
             }
         }
 
-        State = ActionState.Traveling;
+        _state = ActionState.Traveling;
     }
     #endregion
 

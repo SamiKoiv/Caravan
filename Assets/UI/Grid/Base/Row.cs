@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ManagedUpdateBehaviour : MonoBehaviour
+public class Row : MonoBehaviour
 {
-   
+
 }

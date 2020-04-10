@@ -5,9 +5,7 @@ using TMPro;
 
 public class Mine : Location
 {
-    public TextMeshPro DisplayedStored;
-
-    private float timeUntilNext;
+    private float timer;
 
     public override int Inventory
     {
@@ -15,22 +13,22 @@ public class Mine : Location
         set
         {
             _inventory = value;
-            DisplayedStored.text = Inventory.ToString();
         }
     }
 
     void Start()
     {
         Inventory = StartInventory;
-        timeUntilNext = Time.time + 1;
     }
 
     void Update()
     {
-        if (Time.time > timeUntilNext)
+        timer += MasterClock.InGame.DeltaTime;
+
+        if (timer > 1)
         {
             Inventory += 1;
-            timeUntilNext += 1;
+            timer -= 1;
         }
     }
 }

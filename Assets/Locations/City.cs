@@ -5,8 +5,6 @@ using TMPro;
 
 public class City : Location
 {
-    public TextMeshPro DisplayedStored;
-
     private float timeUntilNext;
 
     public override int Inventory
@@ -15,7 +13,6 @@ public class City : Location
         set
         {
             _inventory = value;
-            DisplayedStored.text = Inventory.ToString();
         }
     }
 
