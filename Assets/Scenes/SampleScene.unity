@@ -389,13 +389,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startInventory:
     _contents:
-    - _item: {fileID: 11400000, guid: ed672c138b3b8c14ab27df64a34e8e53, type: 2}
+    - key: 
+      _item: {fileID: 11400000, guid: ed672c138b3b8c14ab27df64a34e8e53, type: 2}
       _amount: 100
       _quality: 255
   _inventory:
-    _contents: []
+    _contents:
+    - key: Iron Ore
+      _item: {fileID: 11400000, guid: ed672c138b3b8c14ab27df64a34e8e53, type: 2}
+      _amount: 150
+      _quality: 100
   _productionRecipes:
   - {fileID: 11400000, guid: 80d975aebee5ebb4da557080750353ba, type: 2}
+  _productions: []
 --- !u!58 &64090984
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1470,6 +1476,7 @@ MonoBehaviour:
   _inventory:
     _contents: []
   _productionRecipes: []
+  _productions: []
 --- !u!58 &394280582
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2271,6 +2278,7 @@ MonoBehaviour:
   _inventory:
     _contents: []
   _productionRecipes: []
+  _productions: []
 --- !u!4 &608335815
 Transform:
   m_ObjectHideFlags: 0
@@ -5511,6 +5519,7 @@ MonoBehaviour:
   _inventory:
     _contents: []
   _productionRecipes: []
+  _productions: []
 --- !u!58 &1721520576
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5912,6 +5921,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1799602719}
   - component: {fileID: 1799602718}
+  - component: {fileID: 1799602720}
   - component: {fileID: 1799602717}
   m_Layer: 0
   m_Name: Mine
@@ -5937,6 +5947,7 @@ MonoBehaviour:
   _inventory:
     _contents: []
   _productionRecipes: []
+  _productions: []
 --- !u!58 &1799602718
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5970,6 +5981,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1799602720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799602716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20e6ca1437168241a4165a9de477219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnHighlight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHighlightOff:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1799968975
 GameObject:
   m_ObjectHideFlags: 0
@@ -7371,6 +7403,7 @@ MonoBehaviour:
   _inventory:
     _contents: []
   _productionRecipes: []
+  _productions: []
 --- !u!4 &2124670191
 Transform:
   m_ObjectHideFlags: 0

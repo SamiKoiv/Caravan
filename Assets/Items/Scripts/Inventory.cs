@@ -9,6 +9,8 @@ public class Inventory
     [System.Serializable]
     public class Content
     {
+        [HideInInspector] public string key = "Content";
+
         #region Item
         [SerializeField] private Item _item = default;
         public Item Item => _item;
@@ -30,7 +32,11 @@ public class Inventory
             this._item = item;
             this._amount = quantity;
             this._quality = quality;
+
+            key = _item.Name;
         }
+
+        public void RefreshName() => key = Item.Name;
 
         public bool Add(Content newContent)
         {
@@ -54,14 +60,17 @@ public class Inventory
 
             return true;
         }
+
     }
 
     [SerializeField] private List<Content> _contents = new List<Content>();
     private List<Content> Contents => _contents;
 
+    public int TotalItems => Contents.Sum(x => x.Amount);
+
+    public void RefreshContentNames() => Contents.ForEach(x => x.RefreshName());
     public bool HasEnough(Item item, int amount) => Contents.Any(x => x.Item == item && x.Amount >= amount);
     public bool HasEnough(Item item, int amount, float minQuality) => Contents.Any(x => x.Item == item && x.Amount >= amount && x.Quality >= minQuality);
-
     public void Deposit(Content content)
     {
         var existingContent = Contents
@@ -72,7 +81,6 @@ public class Inventory
         else
             Contents.Add(content);
     }
-
     public Content Withdraw(Item item, int amount)
     {
         var content = Contents

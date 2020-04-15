@@ -41,6 +41,22 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void Update()
+    {
+        Mouse();
+    }
+
+    private void Mouse()
+    {
+        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (!Physics.Raycast(mouseRay, out hit))
+            return;
+
+        Debug.Log(hit.transform.name);
+    }
+
     public void Select(Location location)
     {
         Debug.Log($"Selecting {location.gameObject.name}");

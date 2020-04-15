@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Collider2D))]
-public abstract class Location : MonoBehaviour
+public class Location : MonoBehaviour
 {
     public string Name => gameObject.name;
 
@@ -17,38 +16,30 @@ public abstract class Location : MonoBehaviour
     #endregion
 
     #region Inventory
-    [SerializeField] private Inventory _inventory = default;
-    public Inventory Inventory { get; set; }
+    [SerializeField] private Inventory _inventory = new Inventory();
+    public Inventory Inventory => _inventory;
     #endregion
 
     #region Productions
     [SerializeField] public List<ProductionRecipe> _productionRecipes = new List<ProductionRecipe>();
-    private List<ProductionRecipe.Production> _productions = new List<ProductionRecipe.Production>();
+    [SerializeField] private List<ProductionRecipe.Production> _productions = new List<ProductionRecipe.Production>();
     #endregion
 
-    private void Update()
+    public Vector3 Position => transform.position;
+
+    protected virtual void Start()
     {
-        if (_productionRecipes.Count > 0)
-            Debug.Log($"Updating {gameObject.name}");
+        _productionRecipes.ForEach(x => _productions.Add(new ProductionRecipe.Production(x, _inventory)));
+    }
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Debug.Log($"Pressed O");
+    protected virtual void Update()
+    {
+        _productions.ForEach(x => x.Update());
+    }
 
-            _productionRecipes.ForEach(x =>
-            {
-                var production = new ProductionRecipe.Production(x, _inventory);
-                production.StartProduction();
-                _productions.Add(production);
-            });
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log($"Pressed P");
-            _productions.ForEach(x => x.StopProduction());
-            _productions.Clear();
-        }
+    private void OnValidate()
+    {
+        Inventory.RefreshContentNames();
     }
 
     public void Connect(Location other)
@@ -67,29 +58,4 @@ public abstract class Location : MonoBehaviour
             return false;
     }
 
-    public Vector3 Position => transform.position;
-
-    #region Mouse Commands
-
-    private void OnMouseDown()
-    {
-        selectingLocation = this;
-    }
-
-    private void OnMouseUp()
-    {
-        Debug.Log($"{gameObject.name} clicked");
-
-        if (selectingLocation == this)
-            GameManager.Instance.Select(this);
-
-        selectingLocation = null;
-    }
-
-    private void OnMouseExit()
-    {
-        selectingLocation = null;
-    }
-
-    #endregion
 }

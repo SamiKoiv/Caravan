@@ -21,8 +21,10 @@ public class ProductionRecipe : ScriptableObject
         public byte MinQuality => _minQuality;
     }
 
+    [System.Serializable]
     public class Production
     {
+        public string key = "";
         private ProductionRecipe _recipe;
         private Item Product => _recipe.Product;
         private List<Requirement> Requirements => _recipe.Requirements;
@@ -38,32 +40,15 @@ public class ProductionRecipe : ScriptableObject
         {
             this._recipe = recipe;
             this._inventory = inventory;
+            this.key = recipe.Product.Name;
         }
 
-        public void StartProduction()
+        public void Update()
         {
-            MasterClock.InGame.EveryFrame -= Update;
-
-            MasterClock.InGame.EveryFrame += Update;
-            Debug.Log($"Started producing {_recipe.Product.Name}");
-        }
-
-        public void StopProduction()
-        {
-            MasterClock.InGame.EveryFrame -= Update;
-            Debug.Log($"Stopped producing {_recipe.Product.Name}");
-        }
-
-        private void Update()
-        {
-            Debug.Log($"{_recipe.Product.Name} production update");
-
             if (!isProducing && Requirements.All(x => _inventory.HasEnough(x.Item, x.Amount, x.MinQuality)))
             {
                 Requirements.ToList().ForEach(x => _inventory.Withdraw(x.Item, x.Amount));
                 isProducing = true;
-
-                Debug.Log($"{_recipe.Product.Name} production gathered ingredients");
             }
             else if (isProducing)
             {
@@ -74,13 +59,7 @@ public class ProductionRecipe : ScriptableObject
                     t = 0;
                     isProducing = false;
                     _inventory.Deposit(new Inventory.Content(Product, 1, Quality));
-
-                    Debug.Log($"new {_recipe.Product.Name} ready");
                 }
-            }
-            else
-            {
-                Debug.Log($"{_recipe.Product.Name} production waiting");
             }
         }
     }

@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61ddab51c3793a440a596ccb9ba7475d, type: 3}
-  m_Name: New Production
+  m_Name: Iron Bar
   m_EditorClassIdentifier: 
+  key: Iron Bar
   _product: {fileID: 11400000, guid: 13ed5686603d58644a726380a0e3db20, type: 2}
   _timeToProduce: 1
   _requirements:

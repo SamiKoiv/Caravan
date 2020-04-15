@@ -5,11 +5,5 @@ using TMPro;
 
 public class City : Location
 {
-    private float timeUntilNext;
 
-    void Start()
-    {
-        Inventory = StartInventory;
-        timeUntilNext = Time.time + 1;
-    }
 }

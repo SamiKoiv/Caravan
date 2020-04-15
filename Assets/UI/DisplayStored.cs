@@ -10,7 +10,6 @@ public class DisplayStored : MonoBehaviour
 
     void Start()
     {
-        MasterClock.UI.TenTimesPerSecond += () => textField.text = location.Inventory.ToString();
+        MasterClock.UI.TenTimesPerSecond += () => textField.text = location.Inventory.TotalItems.ToString();
     }
-
 }
