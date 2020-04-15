@@ -76,10 +76,9 @@ public class Caravan : MonoBehaviour
 
     #endregion
 
-
-    #region Load
-    [SerializeField] private int _currentLoad;
-    public int CurrentLoad => _currentLoad;
+    #region Inventory
+    [SerializeField] private Inventory _inventory = default;
+    public Inventory Inventory => _inventory;
     #endregion
 
     public Vector2 Position => transform.position;
@@ -92,7 +91,7 @@ public class Caravan : MonoBehaviour
     #region Tracking
 
 
-    [SerializeField] Location[] waypoints;
+    [SerializeField] Location[] waypoints = default;
 
     private int _waypointIterator;
     private int WaypointIterator
@@ -110,15 +109,15 @@ public class Caravan : MonoBehaviour
     private float DeltaTime => MasterClock.InGame.DeltaTime;
 
     [SerializeField] private float moveSpeed = 1;
-    [SerializeField] private float collectionSpeed = 1;
-    [SerializeField] private float collectNext;
-    [SerializeField] int loadMax;
+    //[SerializeField] private float collectionSpeed = 1;
+    //[SerializeField] private float collectNext = default;
+    [SerializeField] int loadMax = default;
 
-    [SerializeField] int loadToA_Min;
-    [SerializeField] private int loadToA_Max;
+    [SerializeField] int loadToA_Min = default;
+    [SerializeField] private int loadToA_Max = default;
 
-    [SerializeField] private int loadToB_Min;
-    [SerializeField] private int loadToB_Max;
+    [SerializeField] private int loadToB_Min = default;
+    [SerializeField] private int loadToB_Max = default;
 
     [SerializeField] private int destination;
 
@@ -209,8 +208,8 @@ public class Caravan : MonoBehaviour
 
     void Unload()
     {
-        CurrentWaypoint.Inventory += _currentLoad;
-        _currentLoad = 0;
+        //CurrentWaypoint.Inventory += _inventory;
+        //_inventory = 0;
         _state = ActionState.Resting;
     }
 
@@ -221,30 +220,32 @@ public class Caravan : MonoBehaviour
 
     void Load()
     {
-        if (_currentLoad == NextLoad_Max)
-        {
-            collectNext = 0;
-            EmbarkToNextDestination();
-            return;
-        }
+        //if (_inventory == NextLoad_Max)
+        //{
+        //    collectNext = 0;
+        //    EmbarkToNextDestination();
+        //    return;
+        //}
 
-        collectNext += DeltaTime * collectionSpeed;
+        //collectNext += DeltaTime * collectionSpeed;
 
-        if (collectNext > 1)
-        {
-            if (waypoints[destination].Inventory > 0)
-            {
-                waypoints[destination].Inventory -= 1;
-                _currentLoad += 1;
-            }
-            else if (_currentLoad >= NextLoad_Min)
-            {
-                EmbarkToNextDestination();
-                return;
-            }
+        //if (collectNext > 1)
+        //{
+        //    if (waypoints[destination].Inventory.HasEnough(null, 0))
+        //    {
+        //        waypoints[destination].Inventory.Withdraw(null, 1);
+        //        _inventory += 1;
+        //    }
+        //    else if (_inventory >= NextLoad_Min)
+        //    {
+        //        EmbarkToNextDestination();
+        //        return;
+        //    }
 
-            collectNext -= 1;
-        }
+        //    collectNext -= 1;
+        //}
+
+        EmbarkToNextDestination();
     }
 
     void EmbarkToNextDestination()

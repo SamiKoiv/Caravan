@@ -8,6 +8,7 @@ public class MasterClock : MonoBehaviour
     public class TimeEnvironment
     {
         public delegate void UpdateEvent();
+        public event UpdateEvent EveryFrame;
         public event UpdateEvent TenTimesPerSecond;
         public event UpdateEvent TwoTimesPerSecond;
         public event UpdateEvent EverySecond;
@@ -32,6 +33,7 @@ public class MasterClock : MonoBehaviour
             timer_twoTimesPerSecond += deltaTime;
             timer_everySecond += deltaTime;
 
+            EveryFrame?.Invoke();
             Update(TenTimesPerSecond, ref timer_tenTimesPerSecond, 0.1f);
             Update(TwoTimesPerSecond, ref timer_twoTimesPerSecond, 0.5f);
             Update(EverySecond, ref timer_everySecond, 1.0f);
@@ -39,11 +41,9 @@ public class MasterClock : MonoBehaviour
 
         private void Update(UpdateEvent update, ref float timer, float interval)
         {
-            if (update == null) return;
-
             if (timer >= interval)
             {
-                update.Invoke();
+                update?.Invoke();
                 timer -= interval;
             }
         }

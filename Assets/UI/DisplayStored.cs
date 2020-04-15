@@ -5,8 +5,8 @@ using TMPro;
 
 public class DisplayStored : MonoBehaviour
 {
-    [SerializeField] TextMeshPro textField;
-    [SerializeField] Location location;
+    [SerializeField] TextMeshPro textField = default;
+    [SerializeField] Location location = default;
 
     void Start()
     {

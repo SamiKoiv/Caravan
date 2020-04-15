@@ -7,15 +7,6 @@ public class City : Location
 {
     private float timeUntilNext;
 
-    public override int Inventory
-    {
-        get => _inventory;
-        set
-        {
-            _inventory = value;
-        }
-    }
-
     void Start()
     {
         Inventory = StartInventory;

@@ -25,11 +25,28 @@ public class Editor_ItemDB : EditorWindow
     int itemIdWidth = 50;
     int itemButtonWidth = 300;
 
-    int filterOrderLabelWidth = 75;
+    int filterOrderLabelWidth = 100;
+    bool onlyUnfinished;
 
     #endregion
 
-    private string GetPath(Item item) => $"Assets/Items/Item Assets/{item.ID}_{item.Name}.asset";
+    #region GetPath
+
+    private string GetPath(ItemDB itemDB) => AssetDatabase.GetAssetPath(itemDB);
+    private string GetPath(Item item)
+    {
+        string parentPath = GetPath(DB);
+        string parentFolder = parentPath.Substring(0, parentPath.LastIndexOf('/'));
+        string folderName = "Items";
+        string itemName = $"{item.ID}_{item.Name}.asset";
+
+        if (!AssetDatabase.IsValidFolder($"{parentFolder}/{folderName}"))
+            AssetDatabase.CreateFolder(parentFolder, folderName);
+
+        return $"{parentFolder}/{folderName}/{itemName}";
+    }
+
+    #endregion
 
     #region Show Window
 
@@ -51,7 +68,6 @@ public class Editor_ItemDB : EditorWindow
 
         items = DB.Items;
 
-        GUILayout.Space(10);
         ToolBar();
         GUILayout.Space(10);
 
@@ -99,8 +115,23 @@ public class Editor_ItemDB : EditorWindow
         if (filterType != Item.ItemType.None)
             items = items.Where(x => x.Type == filterType).ToList();
 
-        if (searchWord != string.Empty)
+        if (searchWord != null && searchWord != string.Empty)
             items = items.Where(x => x.Name.ToLower().Contains(searchWord.ToLower())).ToList();
+    }
+
+    private void OnlyUnfinished()
+    {
+        int labelWidth = filterOrderLabelWidth;
+        int controlWidth = (int)((leftSideWidth - filterOrderLabelWidth) * 0.5f);
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(new GUIContent("Only unfinished "), GUILayout.Width(filterOrderLabelWidth));
+        onlyUnfinished = EditorGUILayout.Toggle(onlyUnfinished);
+
+        GUILayout.EndHorizontal();
+
+        if (onlyUnfinished)
+            items = items.Where(x => x.IsUnfinished).ToList();
     }
 
     #endregion
@@ -181,6 +212,7 @@ public class Editor_ItemDB : EditorWindow
         GUILayout.BeginVertical();
         Order();
         Filter();
+        OnlyUnfinished();
         GUILayout.Space(10);
 
         itemScrollPosition = GUILayout.BeginScrollView(itemScrollPosition, GUILayout.Width(400));
@@ -232,6 +264,7 @@ public class Editor_ItemDB : EditorWindow
         NameField();
         TypeField();
         ValueField();
+        IconField();
 
         GUILayout.Space(20);
         ItemToolbar();
@@ -282,6 +315,25 @@ public class Editor_ItemDB : EditorWindow
         GUILayout.EndHorizontal();
     }
 
+    private void IconField()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label($"Icon: ", GUILayout.Width(labelWidth));
+
+        GUILayout.BeginVertical();
+
+        var icon = EditorGUILayout.ObjectField(selectedItem.Icon, typeof(Sprite), true, GUILayout.Width(itemDatafieldWidth)) as Sprite;
+        selectedItem.SetIcon(icon);
+
+        if (icon != null)
+            GUILayout.Box(icon.texture);
+
+        GUILayout.EndVertical();
+
+
+        GUILayout.EndHorizontal();
+    }
+
     private void ItemToolbar()
     {
         GUILayout.BeginHorizontal();
@@ -290,9 +342,10 @@ public class Editor_ItemDB : EditorWindow
             if (GUILayout.Button("Save Item", GUILayout.Width(buttonWidth)))
             {
                 AssetDatabase.CreateAsset(selectedItem, GetPath(selectedItem));
-                AssetDatabase.SaveAssets();
                 DB.AddItem(selectedItem);
                 addingNewItem = false;
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ForceReserializeAssets(new string[] { GetPath(DB) }, ForceReserializeAssetsOptions.ReserializeAssetsAndMetadata);
             }
 
         if (!addingNewItem)
@@ -303,6 +356,7 @@ public class Editor_ItemDB : EditorWindow
 
                 DB.DeleteItem(selectedItem);
                 AssetDatabase.DeleteAsset(GetPath(selectedItem));
+                AssetDatabase.ForceReserializeAssets(new string[] { GetPath(DB) }, ForceReserializeAssetsOptions.ReserializeAssetsAndMetadata);
 
                 if (DB.Items.Count > 0)
                     selectedItem = DB.Items[nextIndex];

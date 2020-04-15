@@ -2,18 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 //[CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
 public class Item : ScriptableObject
 {
     public enum ItemType
     {
         None,
+        Money,
+        RawMaterials,
+        ProcessedMaterials,
         Food,
+        Refreshments,
+        Water,
         Weapons,
-        Armor,
+        Equipment,
         Clothing,
         Tools,
         Other
+    }
+
+    public bool IsUnfinished
+    {
+        get
+        {
+            if (ID == 0) return true;
+            if (Name == string.Empty) return true;
+            if (Type == ItemType.None) return true;
+            if (Value == 0) return true;
+            if (Icon == null) return true;
+
+            return false;
+        }
     }
 
     #region ID
@@ -28,7 +48,7 @@ public class Item : ScriptableObject
 
     #region Type
 
-    private ItemType _type;
+    [SerializeField] private ItemType _type;
     public ItemType Type => _type;
 
     #endregion
@@ -38,9 +58,15 @@ public class Item : ScriptableObject
     public int Value => _value;
     #endregion
 
+    #region Icon
+    [SerializeField] private Sprite _icon;
+    public Sprite Icon => _icon;
+    #endregion
+
     public void TrySetID(int newID) => _id = ID == 0 ? newID : ID;
     public void SetName(string newName) => _name = newName;
     public void SetType(ItemType type) => _type = type;
     public void SetValue(int newValue) => _value = newValue;
+    public void SetIcon(Sprite sprite) => _icon = sprite;
 
 }

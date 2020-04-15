@@ -11,10 +11,45 @@ public abstract class Location : MonoBehaviour
     private Location selectingLocation;
     private List<Location> ConnectedWith = new List<Location>();
 
-    public int StartInventory;
+    #region Start Inventory
+    [SerializeField] private Inventory _startInventory = default;
+    public Inventory StartInventory => _startInventory;
+    #endregion
 
-    public int _inventory;
-    public abstract int Inventory { get; set; }
+    #region Inventory
+    [SerializeField] private Inventory _inventory = default;
+    public Inventory Inventory { get; set; }
+    #endregion
+
+    #region Productions
+    [SerializeField] public List<ProductionRecipe> _productionRecipes = new List<ProductionRecipe>();
+    private List<ProductionRecipe.Production> _productions = new List<ProductionRecipe.Production>();
+    #endregion
+
+    private void Update()
+    {
+        if (_productionRecipes.Count > 0)
+            Debug.Log($"Updating {gameObject.name}");
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Debug.Log($"Pressed O");
+
+            _productionRecipes.ForEach(x =>
+            {
+                var production = new ProductionRecipe.Production(x, _inventory);
+                production.StartProduction();
+                _productions.Add(production);
+            });
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log($"Pressed P");
+            _productions.ForEach(x => x.StopProduction());
+            _productions.Clear();
+        }
+    }
 
     public void Connect(Location other)
     {

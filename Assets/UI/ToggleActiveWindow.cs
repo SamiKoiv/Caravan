@@ -16,10 +16,10 @@ public class ToggleActiveWindow : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject Target;
-    [SerializeField] private KeyCode Key;
-    [SerializeField] private bool ShowByDefault;
-    [SerializeField] private bool CloseOthers;
+    [SerializeField] private GameObject Target = default;
+    [SerializeField] private KeyCode Key = default;
+    [SerializeField] private bool ShowByDefault = default;
+    [SerializeField] private bool CloseOthers = default;
 
     public bool Visible
     {

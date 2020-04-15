@@ -5,11 +5,11 @@ using TMPro;
 
 public class CaravanRow : Row
 {
-    [SerializeField] private TextMeshProUGUI Field_ID;
-    [SerializeField] private TextMeshProUGUI Field_DestinationA;
-    [SerializeField] private TextMeshProUGUI Field_DestinationB;
-    [SerializeField] private TextMeshProUGUI Field_State;
-    [SerializeField] private TextMeshProUGUI Field_Load;
+    [SerializeField] private TextMeshProUGUI Field_ID = default;
+    [SerializeField] private TextMeshProUGUI Field_DestinationA = default;
+    [SerializeField] private TextMeshProUGUI Field_DestinationB = default;
+    [SerializeField] private TextMeshProUGUI Field_State = default;
+    [SerializeField] private TextMeshProUGUI Field_Load = default;
 
     private Caravan caravan;
 
@@ -36,6 +36,6 @@ public class CaravanRow : Row
         Field_DestinationA.text = caravan.DestinationA.Name;
         Field_DestinationB.text = caravan.DestinationB.Name;
         Field_State.text = caravan.State.ToString();
-        Field_Load.text = caravan.CurrentLoad.ToString();
+        Field_Load.text = caravan.Inventory.ToString();
     }
 }
