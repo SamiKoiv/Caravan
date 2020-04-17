@@ -22,14 +22,14 @@ public class Location : MonoBehaviour
 
     #region Productions
     [SerializeField] public List<ProductionRecipe> _productionRecipes = new List<ProductionRecipe>();
-    [SerializeField] private List<ProductionRecipe.Production> _productions = new List<ProductionRecipe.Production>();
+    [SerializeField] private List<Production> _productions = new List<Production>();
     #endregion
 
     public Vector3 Position => transform.position;
 
     protected virtual void Start()
     {
-        _productionRecipes.ForEach(x => _productions.Add(new ProductionRecipe.Production(x, _inventory)));
+        _productionRecipes.ForEach(x => _productions.Add(new Production(x, _inventory)));
     }
 
     protected virtual void Update()

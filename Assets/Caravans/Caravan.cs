@@ -250,12 +250,12 @@ public class Caravan : MonoBehaviour
 
     void EmbarkToNextDestination()
     {
-        if (destination == 0)
+        if (WaypointIterator == 0)
         {
             destination = waypoints.Length - 1;
             WaypointIterator += 1;
         }
-        else if (destination == waypoints.Length - 1)
+        else if (WaypointIterator == waypoints.Length - 1)
         {
             destination = 0;
             WaypointIterator -= 1;

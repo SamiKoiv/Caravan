@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ddab51c3793a440a596ccb9ba7475d, type: 3}
   m_Name: Iron Bar
   m_EditorClassIdentifier: 
-  key: Iron Bar
   _product: {fileID: 11400000, guid: 13ed5686603d58644a726380a0e3db20, type: 2}
   _timeToProduce: 1
   _requirements:
   - key: Iron Ore(1)
     _item: {fileID: 11400000, guid: ed672c138b3b8c14ab27df64a34e8e53, type: 2}
+    _amount: 1
+    _minQuality: 0
+  - key: Coal(1)
+    _item: {fileID: 11400000, guid: dfb202be5ed12ea4fbcbedbf46c75bc4, type: 2}
     _amount: 1
     _minQuality: 0

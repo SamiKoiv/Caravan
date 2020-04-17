@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     private Location selectedLocation;
 
+    private MouseController mouseController = new MouseController();
+
     private void Awake()
     {
         if (_instance == null)
@@ -43,18 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        Mouse();
-    }
-
-    private void Mouse()
-    {
-        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (!Physics.Raycast(mouseRay, out hit))
-            return;
-
-        Debug.Log(hit.transform.name);
+        mouseController.Run();
     }
 
     public void Select(Location location)
