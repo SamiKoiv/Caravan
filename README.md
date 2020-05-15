@@ -1,6 +1,6 @@
 # Caravan
 
-This is a little resource management and free-flowing learning project of mine.
+This is a little resource management and free-flowing learning project of mine. Takes inspiration from games like Cities Skylines, Mindustry and Factorio.
 
 Some features developed so far:
 - Item base architecture is in place. The items are based on Unity's ScriptableObjects, which I can later quite easily serialize for save data.
