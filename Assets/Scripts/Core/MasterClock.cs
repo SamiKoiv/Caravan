@@ -5,7 +5,7 @@ namespace ProjectCaravan.Core
     public class MasterClock : MonoBehaviour
     {
         [System.Serializable]
-        public class TimeEnvironment
+        public class TimeEnvironment : IUpdate
         {
             public delegate void UpdateEvent();
             public event UpdateEvent EveryFrame;
@@ -99,11 +99,11 @@ namespace ProjectCaravan.Core
             InGame.SetSpeedModifier(1);
         }
 
-        //void Update()
-        //{
-        //    UI.Update(Time.deltaTime);
-        //    InGame.Update(Time.deltaTime);
-        //}
+        void Update()
+        {
+            UI.Update(Time.deltaTime);
+            InGame.Update(Time.deltaTime);
+        }
 
         private void FixedUpdate()
         {

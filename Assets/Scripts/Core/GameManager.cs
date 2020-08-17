@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using ProjectCaravan.Core.UserInput;
 using ProjectCaravan.Locations;
+using System.Net.Configuration;
+using System.Collections.Generic;
 
 namespace ProjectCaravan.Core
 {
@@ -31,11 +33,17 @@ namespace ProjectCaravan.Core
 
         #endregion
 
+        List<IUpdate> Updatables = new List<IUpdate>();
+
         public Material RoadMaterial;
 
         private Location selectedLocation;
 
         private MouseController mouseController = new MouseController();
+
+        public Calendar Calendar { get; } = new Calendar(1328);
+
+        float deltaTime;
 
         private void Awake()
         {
@@ -43,11 +51,16 @@ namespace ProjectCaravan.Core
                 _instance = this;
             else
                 Destroy(gameObject);
+
+            Updatables.Add(Calendar);
         }
 
         private void Update()
         {
             mouseController.Run();
+
+            deltaTime = Time.deltaTime;
+            Updatables.ForEach(x => x.Update(deltaTime));
         }
 
         public void Select(Location location)

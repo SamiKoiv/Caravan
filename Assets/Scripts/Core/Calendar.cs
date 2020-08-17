@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
-public class Calendar : MonoBehaviour
+public class Calendar : IUpdate
 {
     public event EventHandler DayChanged;
     public event EventHandler WeekChanged;
@@ -20,34 +17,38 @@ public class Calendar : MonoBehaviour
         Winter = 4
     }
 
-    private float secondsPerDay;
+    private float secondsPerDay = 1;
     private int daysPerWeek = 6;
     private int daysPerMonth = 30;
     private int daysPerSeason = 90;
     private int daysPerYear = 360;
     private int seasons = 4;
 
-    public int day = 1;
-    public int week = 1;
-    public int month = 1;
-    public Seasons season = (Seasons)1;
-    public int year = 1;
+    public int Day { get; private set; } = 1;
+    public int Week { get; private set; } = 1;
+    public int Month { get; private set; } = 1;
+    public Seasons Season { get; private set; } = (Seasons)1;
+    public int Year { get; private set; } = 1;
+
+    public int DayInWeek { get => Day - daysPerWeek * (Week - 1); }
+    public int WeekInMonth { get => Week - (Month - 1) * daysPerMonth / daysPerWeek; }
 
     public float timeSpeedMultiplier = 1;
     private float t = 0;
 
-    private void Start()
+    public Calendar(int startingYear)
     {
-        day = 1;
-        year = 1328;
+        Year = startingYear;
+        Day = 1;
     }
 
-    private void Update()
+    public void Update(float time)
     {
-        t += Time.deltaTime * timeSpeedMultiplier;
+        t += time * timeSpeedMultiplier;
 
-        while (t > 1)
+        while (t > secondsPerDay)
         {
+            Debug.Log("Day passes");
             NextDay();
             t--;
         }
@@ -55,42 +56,42 @@ public class Calendar : MonoBehaviour
 
     private void NextDay()
     {
-        day++;
-        if (day % daysPerWeek == 1) NextWeek();
+        Day++;
+        if (Day % daysPerWeek == 1) NextWeek();
 
         DayChanged?.Invoke(this, new EventArgs());
     }
 
     private void NextWeek()
     {
-        week++;
-        if (day % daysPerMonth == 1) NextMonth();
+        Week++;
+        if (Day % daysPerMonth == 1) NextMonth();
 
         WeekChanged?.Invoke(this, new EventArgs());
     }
 
     private void NextMonth()
     {
-        month++;
-        if (day % daysPerSeason == 1) NextSeason();
-        if (day % daysPerYear == 1) NextYear();
+        Month++;
+        if (Day % daysPerSeason == 1) NextSeason();
+        if (Day % daysPerYear == 1) NextYear();
 
         MonthChanged?.Invoke(this, new EventArgs());
     }
 
     private void NextSeason()
     {
-        season++;
+        Season++;
         SeasonChanged?.Invoke(this, new EventArgs());
     }
 
     private void NextYear()
     {
-        year++;
-        day = 1;
-        week = 1;
-        month = 1;
-        season = (Seasons)1;
+        Year++;
+        Day = 1;
+        Week = 1;
+        Month = 1;
+        Season = (Seasons)1;
 
         YearChanged?.Invoke(this, new EventArgs());
     }
