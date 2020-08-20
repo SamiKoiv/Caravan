@@ -41,7 +41,7 @@ namespace ProjectCaravan.Items.Production
                 {
                     t = 0;
                     isProducing = false;
-                    _inventory.Deposit(new Inventory.Content(Product, 1, Quality));
+                    _inventory.Deposit(new InventoryContent(Product, 1, Quality));
                 }
             }
         }
