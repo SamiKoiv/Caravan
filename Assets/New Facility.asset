@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory:
     _contents: []
+  consumption: []
+  production: []
