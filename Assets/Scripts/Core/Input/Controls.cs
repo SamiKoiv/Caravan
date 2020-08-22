@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Core/Controls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Core/Input/Controls.inputactions'
 
 using System;
 using System.Collections;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace ProjectCaravan.Core
+namespace ProjectCaravan.Core.Input
 {
     public class @Controls : IInputActionCollection, IDisposable
     {
@@ -33,6 +33,38 @@ namespace ProjectCaravan.Core
                     ""type"": ""PassThrough"",
                     ""id"": ""45db2a28-4801-45aa-bdf4-632651aabc98"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7345ef3-6d71-4191-8c0c-db085abdca6d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Deselect"",
+                    ""type"": ""Button"",
+                    ""id"": ""c35a4d51-3360-47cb-9fef-35b0c6387db0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""46e79679-c9d8-4b5c-bf2b-162cda6392da"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""83db93f5-50a2-42f3-ad10-0a1200d367a3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -103,6 +135,50 @@ namespace ProjectCaravan.Core
                     ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c30a698f-7777-4237-9cde-356035275020"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c060698-92f7-4851-9f95-011cee158d9d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Deselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92ce5d59-8c4e-45b3-a74d-3c9cf1eccb80"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9b662ba-c072-42dc-baa9-65de937ffe2d"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -113,6 +189,10 @@ namespace ProjectCaravan.Core
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_MoveCamera = m_Gameplay.FindAction("MoveCamera", throwIfNotFound: true);
             m_Gameplay_ZoomCamera = m_Gameplay.FindAction("ZoomCamera", throwIfNotFound: true);
+            m_Gameplay_Select = m_Gameplay.FindAction("Select", throwIfNotFound: true);
+            m_Gameplay_Deselect = m_Gameplay.FindAction("Deselect", throwIfNotFound: true);
+            m_Gameplay_MousePosition = m_Gameplay.FindAction("MousePosition", throwIfNotFound: true);
+            m_Gameplay_MouseDelta = m_Gameplay.FindAction("MouseDelta", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -164,12 +244,20 @@ namespace ProjectCaravan.Core
         private IGameplayActions m_GameplayActionsCallbackInterface;
         private readonly InputAction m_Gameplay_MoveCamera;
         private readonly InputAction m_Gameplay_ZoomCamera;
+        private readonly InputAction m_Gameplay_Select;
+        private readonly InputAction m_Gameplay_Deselect;
+        private readonly InputAction m_Gameplay_MousePosition;
+        private readonly InputAction m_Gameplay_MouseDelta;
         public struct GameplayActions
         {
             private @Controls m_Wrapper;
             public GameplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @MoveCamera => m_Wrapper.m_Gameplay_MoveCamera;
             public InputAction @ZoomCamera => m_Wrapper.m_Gameplay_ZoomCamera;
+            public InputAction @Select => m_Wrapper.m_Gameplay_Select;
+            public InputAction @Deselect => m_Wrapper.m_Gameplay_Deselect;
+            public InputAction @MousePosition => m_Wrapper.m_Gameplay_MousePosition;
+            public InputAction @MouseDelta => m_Wrapper.m_Gameplay_MouseDelta;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -185,6 +273,18 @@ namespace ProjectCaravan.Core
                     @ZoomCamera.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnZoomCamera;
                     @ZoomCamera.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnZoomCamera;
                     @ZoomCamera.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnZoomCamera;
+                    @Select.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                    @Select.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                    @Select.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                    @Deselect.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDeselect;
+                    @Deselect.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDeselect;
+                    @Deselect.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDeselect;
+                    @MousePosition.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MouseDelta.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseDelta;
+                    @MouseDelta.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseDelta;
+                    @MouseDelta.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseDelta;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -195,6 +295,18 @@ namespace ProjectCaravan.Core
                     @ZoomCamera.started += instance.OnZoomCamera;
                     @ZoomCamera.performed += instance.OnZoomCamera;
                     @ZoomCamera.canceled += instance.OnZoomCamera;
+                    @Select.started += instance.OnSelect;
+                    @Select.performed += instance.OnSelect;
+                    @Select.canceled += instance.OnSelect;
+                    @Deselect.started += instance.OnDeselect;
+                    @Deselect.performed += instance.OnDeselect;
+                    @Deselect.canceled += instance.OnDeselect;
+                    @MousePosition.started += instance.OnMousePosition;
+                    @MousePosition.performed += instance.OnMousePosition;
+                    @MousePosition.canceled += instance.OnMousePosition;
+                    @MouseDelta.started += instance.OnMouseDelta;
+                    @MouseDelta.performed += instance.OnMouseDelta;
+                    @MouseDelta.canceled += instance.OnMouseDelta;
                 }
             }
         }
@@ -203,6 +315,10 @@ namespace ProjectCaravan.Core
         {
             void OnMoveCamera(InputAction.CallbackContext context);
             void OnZoomCamera(InputAction.CallbackContext context);
+            void OnSelect(InputAction.CallbackContext context);
+            void OnDeselect(InputAction.CallbackContext context);
+            void OnMousePosition(InputAction.CallbackContext context);
+            void OnMouseDelta(InputAction.CallbackContext context);
         }
     }
 }

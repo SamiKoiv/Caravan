@@ -1,4 +1,4 @@
-﻿using ProjectCaravan.Core;
+﻿using ProjectCaravan.Core.Input;
 using UnityEngine;
 
 public class CameraControllerX : MonoBehaviour

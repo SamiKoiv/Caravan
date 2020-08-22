@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using ProjectCaravan.Core.UserInput;
+﻿using ProjectCaravan.Core.Input;
 using ProjectCaravan.Locations;
-using System.Net.Configuration;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ProjectCaravan.Core
 {
@@ -39,7 +38,7 @@ namespace ProjectCaravan.Core
 
         private Location selectedLocation;
 
-        private MouseController mouseController = new MouseController();
+        private MouseClickController mouseController = new MouseClickController();
 
         public Calendar Calendar { get; } = new Calendar(1328);
 
